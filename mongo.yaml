@@ -34,10 +34,10 @@ spec:
                   - containerPort: 27017
               volumeMounts:
                   - name: mongodb-cert
-                    mountPath: /mnt/mongodb-cert/
+                    mountPath: /var/run/secrets/pulp/mongodb-cert/
                     readOnly: true
                   - name: pulp-ca
-                    mountPath: /mnt/pulp-ca/
+                    mountPath: /var/run/secrets/pulp/pulp-ca/
         volumes:
             - name: mongodb-cert
               secret:

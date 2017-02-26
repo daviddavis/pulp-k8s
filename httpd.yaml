@@ -41,19 +41,19 @@ spec:
                   - containerPort: 443
               volumeMounts:
                   - name: pulp-config
-                    mountPath: /mnt/pulp-config/
+                    mountPath: /var/run/secrets/pulp/pulp-config/
                     readOnly: true
                   - name: httpd-cert
-                    mountPath: /mnt/httpd-cert/
+                    mountPath: /var/run/secrets/pulp/httpd-cert/
                     readOnly: true
                   - name: auth-ca
                     mountPath: /var/run/secrets/pulp/auth-ca/
                     readOnly: true
                   - name: client-cert
-                    mountPath: /mnt/client-cert/
+                    mountPath: /var/run/secrets/pulp/client-cert/
                     readOnly: true
                   - name: pulp-ca
-                    mountPath: /mnt/pulp-ca/
+                    mountPath: /var/run/secrets/pulp/pulp-ca/
                   - name: vlp
                     mountPath: /var/lib/pulp/
                   - name: logvol

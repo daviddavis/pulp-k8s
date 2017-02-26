@@ -14,10 +14,10 @@ spec:
           - /setup.sh
       volumeMounts:
           - name: pulp-config
-            mountPath: /mnt/pulp-config/
+            mountPath: /var/run/secrets/pulp/pulp-config/
             readOnly: true
           - name: vlp
-            mountPath: /mnt/vlp/
+            mountPath: /var/run/secrets/pulp/vlp/
   volumes:
       - name: pulp-config
         secret:
