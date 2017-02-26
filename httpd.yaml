@@ -46,6 +46,14 @@ spec:
                   - name: httpd-cert
                     mountPath: /mnt/httpd-cert/
                     readOnly: true
+                  - name: auth-ca
+                    mountPath: /var/run/secrets/pulp/auth-ca/
+                    readOnly: true
+                  - name: client-cert
+                    mountPath: /mnt/client-cert/
+                    readOnly: true
+                  - name: pulp-ca
+                    mountPath: /mnt/pulp-ca/
                   - name: vlp
                     mountPath: /var/lib/pulp/
                   - name: logvol
@@ -58,6 +66,15 @@ spec:
             - name: httpd-cert
               secret:
                   secretName: httpd-cert
+            - name: auth-ca
+              secret:
+                  secretName: auth-ca
+            - name: client-cert
+              secret:
+                secretName: client-cert
+            - name: pulp-ca
+              configMap:
+                  name: pulp-ca
             - name: vlp
               persistentVolumeClaim:
                   claimName: vlp
