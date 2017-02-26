@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "qpid"
+  labels:
+    name: "qpid"
+    app: "pulp"
+spec:
+    containers:
+        - name: qpid
+          image: pulp/qpid
+          imagePullPolicy: Never
+          ports:
+              - containerPort: 5672

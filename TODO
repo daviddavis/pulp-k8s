@@ -1,0 +1,26 @@
+Setup
+=====
+
+SSL
+---
+
+Make a CA to sign service certs.
+Make a CA to sign user auth certs.
+Make and sign service certs.
+Mount certs in a secret.
+
+Apache
+^^^^^^
+
+
+User Auth Certs
+^^^^^^^^^^^^^^^
+run pulp-gen-ca-certificate
+path is /etc/pki/pulp/ca.*
+delete originals in base Dockerfile
+
+Mongo
+^^^^^
+
+Qpid
+^^^^

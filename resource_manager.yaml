@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: resource-manager
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+          app: pulp
+          name: resource-manager
+    spec:
+        containers:
+            - name: resource-manager
+              image: pulp/celery
+              imagePullPolicy: Never
+              args:
+                  - resource_manager
+              volumeMounts:
+                  - name: pulp-config
+                    mountPath: /mnt/pulp-config/
+                    readOnly: true
+                  - name: vlp
+                    mountPath: /var/lib/pulp/
+                  - name: logvol
+                    mountPath: /dev/log
+                    readOnly: false
+        volumes:
+            - name: pulp-config
+              secret:
+                  secretName: pulp-config
+            - name: vlp
+              persistentVolumeClaim:
+                  claimName: vlp
+            - name: logvol
+              hostPath:
+                  path: /dev/log

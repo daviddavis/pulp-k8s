@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qpidd
+  labels:
+      app: pulp
+spec:
+  type: NodePort
+  ports:
+  - port: 5672
+    protocol: TCP
+  selector:
+      name: qpid
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: qpidd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+          app: pulp
+          name: qpid
+    spec:
+        containers:
+            - name: qpidd
+              image: pulp/qpid
+              imagePullPolicy: Never
+              ports:
+                  - containerPort: 5672
