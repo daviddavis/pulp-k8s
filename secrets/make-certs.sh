@@ -121,6 +121,10 @@ openssl x509 \
 
 cat certs/client.key certs/client.crt > certs/client.pem
 
+##### Create qpid cert and DB
+
+./pulp-qpid-ssl-cfg
+
 
 # clean
 rm ${TMP}/*.req

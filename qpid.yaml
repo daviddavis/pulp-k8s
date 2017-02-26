@@ -7,10 +7,10 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 5672
+  - port: 5671
     protocol: TCP
   selector:
-      name: qpid
+      name: qpidd
 
 ---
 
@@ -24,11 +24,24 @@ spec:
     metadata:
       labels:
           app: pulp
-          name: qpid
+          name: qpidd
     spec:
         containers:
             - name: qpidd
               image: pulp/qpid
               imagePullPolicy: Never
               ports:
-                  - containerPort: 5672
+                  - containerPort: 5671
+              volumeMounts:
+                  - name: pulp-ca
+                    mountPath: /var/run/secrets/pulp/pulp-ca/
+                  - name: qpiddb
+                    mountPath: /var/run/secrets/pulp/qpiddb/
+                    readOnly: true
+        volumes:
+            - name: qpiddb
+              secret:
+                secretName: qpiddb
+            - name: pulp-ca
+              configMap:
+                  name: pulp-ca

@@ -7,5 +7,6 @@ kubectl create secret generic mongodb-cert --from-file=mongodb.pem
 kubectl create secret generic client-cert --from-file=client.pem --from-file=client.crt --from-file=client.key
 kubectl create secret generic auth-ca --from-file=auth-ca.crt --from-file=auth-ca.key
 popd
+kubectl create secret generic qpiddb --from-file=qpiddb/nss
 
 kubectl create configmap pulp-ca --from-file=certs/ca.crt
