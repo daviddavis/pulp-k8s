@@ -32,3 +32,16 @@ spec:
               imagePullPolicy: Never
               ports:
                   - containerPort: 27017
+              volumeMounts:
+                  - name: mongodb-cert
+                    mountPath: /mnt/mongodb-cert/
+                    readOnly: true
+                  - name: pulp-ca
+                    mountPath: /mnt/pulp-ca/
+        volumes:
+            - name: mongodb-cert
+              secret:
+                  secretName: mongodb-cert
+            - name: pulp-ca
+              configMap:
+                  name: pulp-ca

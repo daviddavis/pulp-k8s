@@ -2,4 +2,6 @@
 
 kubectl delete secret pulp-config
 kubectl delete secret httpd-cert
+kubectl delete secret mongodb-cert
+kubectl delete secret client-cert
 kubectl delete configmap pulp-ca
