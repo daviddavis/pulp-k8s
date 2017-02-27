@@ -44,16 +44,17 @@ default admin password. For settings that are already populated with
 non-default values, those values are likely important to integration with other
 k8s resources. It's wise to understand the current value before changing it.
 
-"minify" the config when you are done. You will see it create `server.conf`.
+"minify" the config when you are done. You will see the script create
+`server.conf`.
 
-    make-server-conf.sh
+    ./make-server-conf.sh
 
 ### Certificates
 
 This script creates a self-signed CA, and all of the certificates needed by the
 various pulp services.
 
-    make-certs.sh
+    ./make-certs.sh
 
 If you prefer to provide your own certificates, pause here and replace what was
 generated. Most of the output is in the `certs` directory, but `qpidd` requires
@@ -63,13 +64,13 @@ an NSS database found in the `qpidd` directory.
 
 Just run the script to generate the pair.
 
-    pulp-gen-key-pair
+    ./pulp-gen-key-pair
 
 ### Commit
 
 Done! Now run the provided script to "commit" the secrets into k8s.
 
-    commit.sh
+    ./commit.sh
 
 At any time you can stop services, run `delete.sh` to remove the secrets from
 k8s, modify values as you like, and then re-commit with `commit.sh`. Then start
@@ -118,7 +119,7 @@ them, feel free to adjust the number of replicas of each `Deployment` resource.
 For anything more serious than a demo, I would start with 4-8 workers, and 2 of
 each other Pulp service.
 
-    up.sh
+    ./up.sh
 
 
 Access Pulp
