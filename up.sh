@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-kubectl create -f httpd.yaml
-kubectl create -f celerybeat.yaml
-kubectl create -f worker.yaml
-kubectl create -f resource_manager.yaml
+# starts Pulp services
+
+kubectl create -f resources/celerybeat.yaml
+kubectl create -f resources/httpd.yaml
+kubectl create -f resources/worker.yaml
+kubectl create -f resources/resource_manager.yaml

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-kubectl delete -f httpd.yaml
-kubectl delete -f celerybeat.yaml
-kubectl delete -f worker.yaml
-kubectl delete -f resource_manager.yaml
+# stops Pulp services
+
+kubectl delete -f resources/httpd.yaml
+kubectl delete -f resources/worker.yaml
+kubectl delete -f resources/resource_manager.yaml
+sleep 1 # let celerybeat notice that the workers are gone and clean up
+kubectl delete -f resources/celerybeat.yaml

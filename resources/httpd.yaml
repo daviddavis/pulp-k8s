@@ -43,11 +43,8 @@ spec:
                   - name: pulp-config
                     mountPath: /var/run/secrets/pulp/pulp-config/
                     readOnly: true
-                  - name: httpd-cert
+                  - name: httpd-certs
                     mountPath: /var/run/secrets/pulp/httpd-cert/
-                    readOnly: true
-                  - name: auth-ca
-                    mountPath: /var/run/secrets/pulp/auth-ca/
                     readOnly: true
                   - name: client-cert
                     mountPath: /var/run/secrets/pulp/client-cert/
@@ -63,12 +60,9 @@ spec:
             - name: pulp-config
               secret:
                   secretName: pulp-config
-            - name: httpd-cert
+            - name: httpd-certs
               secret:
-                  secretName: httpd-cert
-            - name: auth-ca
-              secret:
-                  secretName: auth-ca
+                  secretName: httpd-certs
             - name: client-cert
               secret:
                 secretName: client-cert

@@ -17,7 +17,7 @@ spec:
             mountPath: /var/run/secrets/pulp/pulp-config/
             readOnly: true
           - name: vlp
-            mountPath: /var/run/secrets/pulp/vlp/
+            mountPath: /mnt/vlp/
   volumes:
       - name: pulp-config
         secret:
