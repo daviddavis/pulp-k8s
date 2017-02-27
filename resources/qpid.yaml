@@ -38,6 +38,8 @@ spec:
                   - name: qpiddb
                     mountPath: /var/run/secrets/pulp/qpiddb/
                     readOnly: true
+                  - name: vlq
+                    mountPath: /var/lib/qpidd/
         volumes:
             - name: qpiddb
               secret:
@@ -45,3 +47,6 @@ spec:
             - name: pulp-ca
               configMap:
                   name: pulp-ca
+            - name: vlq
+              persistentVolumeClaim:
+                  claimName: vlq

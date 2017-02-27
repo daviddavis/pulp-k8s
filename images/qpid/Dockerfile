@@ -6,4 +6,6 @@ EXPOSE 5671
 
 ADD qpidd.conf /etc/qpid/qpidd.conf
 
-ENTRYPOINT ["qpidd", "--config=/etc/qpid/qpidd.conf"]
+ADD run.sh /run.sh
+
+ENTRYPOINT ["/run.sh"]
