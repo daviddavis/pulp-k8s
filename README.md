@@ -1,8 +1,25 @@
+What Is This
+============
+
+This repository contains almost everything you need to have a production-quality
+deployment of Pulp on Kubernetes. You provide a running k8s clusters plus
+shared storage.
+
+TLS with client certificate authentication is used among the services. A
+self-signed CA and all required certificates are created and distributed
+automatically.
+
+This is highly experimental and not yet officially supported. If there is interest,
+and if others can help get these materials tested and improved, it could become
+a fully supported and recommended deployment model by the Pulp Project.
+
+
 Getting Started
 ===============
 
 To start quickly with a demo-quality single-node kubernetes cluster, try
-[minikube](https://kubernetes.io/docs/getting-started-guides/minikube/).
+[minikube](https://kubernetes.io/docs/getting-started-guides/minikube/). When
+you have a running cluster, proceed.
 
 Storage
 -------
@@ -19,8 +36,7 @@ defaults only work on a single-node deployment (such as minikube).
 Secrets
 -------
 
-server.conf
-^^^^^^^^^^^
+### server.conf
 
 Edit `secrets/full-server.conf` to your liking. Consider such settings as the
 default admin password. For settings that are already populated with
@@ -31,8 +47,7 @@ k8s resources. It's wise to understand the current value before changing it.
 
     make-server-conf.sh
 
-Certificates
-^^^^^^^^^^^^
+### Certificates
 
 This script creates a self-signed CA, and all of the certificates needed by the
 various pulp services.
@@ -43,15 +58,13 @@ If you prefer to provide your own certificates, pause here and replace what was
 generated. Most of the output is in the `certs` directory, but `qpidd` requires
 an NSS database found in the `qpidd` directory.
 
-RSA Key Pair
-^^^^^^^^^^^^
+### RSA Key Pair
 
 Just run the script to generate the pair.
 
     pulp-gen-key-pair
 
-Commit
-^^^^^^
+### Commit
 
 Done! Now run the provided script to "commit" the secrets into k8s.
 
@@ -101,6 +114,8 @@ Start Pulp
 
 This script is a shortcut for creating the Pulp resources. Before creating
 them, feel free to adjust the number of replicas of each `Deployment` resource.
+For anything more serious than a demo, I would start with 4-8 workers, and 2 of
+each other Pulp service.
 
     up.sh
 
@@ -108,9 +123,10 @@ them, feel free to adjust the number of replicas of each `Deployment` resource.
 Access Pulp
 -----------
 
-This deployment uses the most recent Fedora release in the contain images. For
-now, it is up to you to run your own machine with the same version of Fedora,
-or otherwise install `pulp-admin` of the same version that matches the images.
+This deployment uses the most recent Fedora release in the container images.
+For now, it is up to you to run your own machine with the same version of
+Fedora, or otherwise install `pulp-admin` of the same version that matches the
+images.
 
 Since I use Fedora on my laptop anyway, this document will proceed with that.
 
@@ -130,6 +146,7 @@ minikube:
     minikube ip
 
 Edit your `/etc/hosts` file so the name `pulpapi` resolved to those addresses.
+Or use a DNS service if you have one handy.
 
     sudo echo 192.168.42.149 pulpapi >> /etc/hosts 
 
@@ -137,4 +154,63 @@ Cross your fingers, and then clumsily type:
 
     pulp-admin status
 
-You are now free to log in and use Pulp as normal.
+Assuming the status looks good, you are now free to log in and use Pulp as
+normal.
+
+
+Scaling
+-------
+
+Need more workers? No problem.
+
+    kubectl scale --replicas=16 deployment/worker
+
+Finished a batch of work and ready to scale back? Just as easy.
+
+    kubectl scale --replicas=4 deployment/worker
+
+For maximum fun, I like to run this in another terminal while scaling workers:
+
+    watch -n 1 pulp-admin status
+
+
+Limitations
+-----------
+
+### Load Balancing
+
+Kubernetes does not yet have a great story around load balancing or highly
+available access to services that want to terminate their own TLS. Pulp is
+currently suited to running TCP from the client all the way to the `httpd`
+process for that very purpose.
+
+The new [Ingress](https://kubernetes.io/docs/user-guide/ingress/) resource type
+appears to be targeting layer 7, so it is not useful in this case.
+
+For now this uses the
+[NodePort](https://kubernetes.io/docs/user-guide/services/#type-nodeport)
+feature of the `Service` resource, which limits us by default to a range of
+ports above 30000.
+
+Please suggest ideas if you have them.
+
+### On-Demand Support Not Deployed
+
+This does not yet include support for [Alternate Download
+Policies](http://docs.pulpproject.org/user-guide/deferred-download.html).
+I think it would be straight-forward to add. We just need to:
+
+- install the streamer on the base image
+- create a new image that runs squid
+- create `Deployment` resources for both the streamer and squid
+
+### REST API Coupled With Content Serving
+
+For simplicity, I made one `httpd` pod template that does everything. This
+includes serving the REST API and serving published content. Those are very
+different roles with different characteristics, and httpd already runs them in
+different processes.
+
+It would be better to make a separate pod template for each. That would require
+substantial modification of Pulp's default httpd configuration, which is the
+main reason I avoided it so far.
