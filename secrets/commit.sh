@@ -2,7 +2,9 @@
 
 # The RSA keys tend to be needed everywhere server.conf is needed, so that's
 # the only reason they're all in the same secret.
+cat full-server.conf | egrep -v '^#.*' | egrep -v '^$' > server.conf
 kubectl create secret generic pulp-config --from-file=server.conf --from-file=certs/rsa.key --from-file=certs/rsa_pub.key
+rm server.conf
 
 pushd certs > /dev/null
 # httpd.* gets used by httpd to serve TLS connections. auth-ca.* gets used to

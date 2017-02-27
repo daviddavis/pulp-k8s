@@ -39,15 +39,12 @@ Secrets
 
 ### server.conf
 
-Edit `secrets/full-server.conf` to your liking. Consider such settings as the
-default admin password. For settings that are already populated with
-non-default values, those values are likely important to integration with other
-k8s resources. It's wise to understand the current value before changing it.
+Edit `secrets/full-server.conf` to your liking. Defaults will work, but
+consider such settings as the initial admin password. For settings that are
+already populated with non-default values, those values are likely important to
+integration with other k8s resources. It's wise to understand the current value
+before changing it.
 
-"minify" the config when you are done. You will see the script create
-`server.conf`.
-
-    ./make-server-conf.sh
 
 ### Certificates
 
@@ -189,7 +186,7 @@ process for that very purpose.
 The new [Ingress](https://kubernetes.io/docs/user-guide/ingress/) resource type
 appears to be targeting layer 7, so it is not useful in this case.
 
-For now this uses the
+For now we are using the
 [NodePort](https://kubernetes.io/docs/user-guide/services/#type-nodeport)
 feature of the `Service` resource, which limits us by default to a range of
 ports above 30000.
@@ -213,6 +210,6 @@ includes serving the REST API and serving published content. Those are very
 different roles with different characteristics, and httpd already runs them in
 different processes.
 
-It would be better to make a separate pod template for each. That would require
+It would be better to make a separate pod template for each. That may require
 substantial modification of Pulp's default httpd configuration, which is the
 main reason I avoided it so far.
