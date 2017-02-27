@@ -38,6 +38,8 @@ spec:
                     readOnly: true
                   - name: pulp-ca
                     mountPath: /var/run/secrets/pulp/pulp-ca/
+                  - name: vlm
+                    mountPath: /var/lib/mongodb/
         volumes:
             - name: mongodb-cert
               secret:
@@ -45,3 +47,6 @@ spec:
             - name: pulp-ca
               configMap:
                   name: pulp-ca
+            - name: vlm
+              persistentVolumeClaim:
+                  claimName: vlm
