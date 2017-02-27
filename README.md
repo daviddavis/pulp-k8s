@@ -2,7 +2,7 @@ What Is This
 ============
 
 This repository contains almost everything you need to have a production-quality
-deployment of Pulp on Kubernetes. You provide a running k8s clusters plus
+deployment of Pulp on Kubernetes. You provide a running k8s cluster plus
 shared storage.
 
 TLS with client certificate authentication is used among the services. A
@@ -11,7 +11,8 @@ automatically.
 
 This is highly experimental and not yet officially supported. If there is interest,
 and if others can help get these materials tested and improved, it could become
-a fully supported and recommended deployment model by the Pulp Project.
+a fully supported and recommended deployment model by the
+[Pulp Project](http://pulpproject.org/).
 
 
 Getting Started
